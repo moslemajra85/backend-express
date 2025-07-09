@@ -99,15 +99,32 @@ async function removeCourse(criteria) {
   }
 }
 
+async function updateCoursePrice(courseId, newPrice) {
+  try {
+    const course = await Course.findById(courseId);
+
+    if (!course) {
+      console.log("Course Was not found".bgBlue);
+      return;
+    }
+
+    course.price = newPrice;
+    course.isPublished = false;
+    await course.save();
+  } catch (error) {
+    console.error(error.message);
+  }
+}
+
 //createCourses();
 
-findCourses({
-  price: {
-    $gte: 20,
-  },
-});
+// findCourses({
+//   price: {
+//     $gte: 20,
+//   },
+// });
 
-
+updateCoursePrice("686e4ba4d233c5a566844ba1", 25);
 const port = process.env.PORT || 3000;
 app.listen(port, () => {
   console.log(
