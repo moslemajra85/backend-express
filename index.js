@@ -99,22 +99,27 @@ async function removeCourse(criteria) {
   }
 }
 
-async function updateCoursePrice(courseId, newPrice) {
-  try {
-    const course = await Course.findById(courseId);
+// async function updateCoursePrice(courseId, newPrice) {
+//   try {
+//     const course = await Course.findById(courseId);
 
-    if (!course) {
-      console.log("Course Was not found".bgBlue);
-      return;
-    }
+//     if (!course) {
+//       console.log("Course Was not found".bgBlue);
+//       return;
+//     }
 
-    course.price = newPrice;
-    course.isPublished = false;
-    await course.save();
-  } catch (error) {
-    console.error(error.message);
-  }
-}
+//     // course.price = newPrice;
+//     // course.isPublished = false;
+
+//     course.set({
+//       price: newPrice,
+//       isPublished: false,
+//     });
+//     await course.save();
+//   } catch (error) {
+//     console.error(error.message);
+//   }
+// }
 
 //createCourses();
 
@@ -124,7 +129,33 @@ async function updateCoursePrice(courseId, newPrice) {
 //   },
 // });
 
-updateCoursePrice("686e4ba4d233c5a566844ba1", 25);
+//updateCoursePrice("686e4ba4d233c5a566844ba2", 30);
+async function updateCourse(id, updatedData) {
+  try {
+    const result = await Course.updateOne(
+      {
+        _id: id,
+      },
+      {
+        $set: {
+          ...updatedData,
+        },
+      }
+    );
+
+    console.log(result);
+  } catch (error) {
+    console.error(error.message);
+  }
+}
+
+updateCourse("686e4ba4d233c5a566844ba2", {
+  name: "C++",
+  author: "Moslem Ajra",
+  price: 20,
+});
+
+
 const port = process.env.PORT || 3000;
 app.listen(port, () => {
   console.log(
