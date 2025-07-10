@@ -16,17 +16,36 @@ async function createCourses() {
   }
 }
 
+async function fetchCourses() {
+  try {
+    //  get all the courses that has an author name starting with "max"
+
+    //const courses = await Course.find({ author: /^max/i });
+    //const courses = await Course.find({ author: /grider$/i });
+
+    const courses = await Course.find({ name: /.*adv.*/i });
+
+    console.log(courses);
+  } catch (error) {
+    console.error(error.message);
+  }
+}
+
+fetchCourses();
 //createCourses();
 async function getCourses() {
   try {
-    const courses = await Course.find().limit(5).sort({
-      price: 1,
-    }).select({
-      name: 1,
-      author: 1,
+    const courses = await Course.find()
+      .limit(5)
+      .sort({
+        price: 1,
+      })
+      .select({
+        name: 1,
+        author: 1,
 
-      _id: 0
-    });
+        _id: 0,
+      });
 
     // const courses = await Course.find({
     //   tags: "Frontend",
@@ -49,7 +68,7 @@ async function getCourses() {
   }
 }
 
-getCourses();
+//getCourses();
 async function findCourses(criteria) {
   try {
     const courses = await Course.find(criteria);
