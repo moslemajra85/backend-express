@@ -1,11 +1,6 @@
-require("dotenv").config();
+const courses = require("../fake/data");
+const Course = require("../models/course");
 const colors = require("colors");
-const express = require("express");
-const connectDB = require("./config/index");
-const Course = require("./models/course");
-const courses = require("./fake/data");
-const app = express();
-connectDB();
 
 async function createCourses() {
   try {
@@ -97,66 +92,54 @@ async function removeCourse(criteria) {
   }
 }
 
-// async function updateCoursePrice(courseId, newPrice) {
-//   try {
-//     const course = await Course.findById(courseId);
-
-//     if (!course) {
-//       console.log("Course Was not found".bgBlue);
-//       return;
-//     }
-
-//     // course.price = newPrice;
-//     // course.isPublished = false;
-
-//     course.set({
-//       price: newPrice,
-//       isPublished: false,
-//     });
-//     await course.save();
-//   } catch (error) {
-//     console.error(error.message);
-//   }
-// }
-
-//createCourses();
-
-// findCourses({
-//   price: {
-//     $gte: 20,
-//   },
-// });
-
-//updateCoursePrice("686e4ba4d233c5a566844ba2", 30);
-async function updateCourse(id, updatedData) {
+async function updateCoursePrice(courseId, newPrice) {
   try {
-    const result = await Course.updateOne(
-      {
-        _id: id,
-      },
-      {
-        $set: {
-          ...updatedData,
-        },
-      }
-    );
+    const course = await Course.findById(courseId);
 
-    console.log(result);
+    if (!course) {
+      console.log("Course Was not found".bgBlue);
+      return;
+    }
+
+    // course.price = newPrice;
+    // course.isPublished = false;
+
+    course.set({
+      price: newPrice,
+      isPublished: false,
+    });
+    await course.save();
   } catch (error) {
     console.error(error.message);
   }
+  // }
+
+  async function updateCourse(id, updatedData) {
+    try {
+      const result = await Course.updateOne(
+        {
+          _id: id,
+        },
+        {
+          $set: {
+            ...updatedData,
+          },
+        }
+      );
+
+      console.log(result);
+    } catch (error) {
+      console.error(error.message);
+    }
+  }
 }
 
-// updateCourse("686e4ba4d233c5a566844ba2", {
-//   name: "C++",
-//   author: "Moslem Ajra",
-//   price: 20,
-// });
-
-const port = process.env.PORT || 3000;
-app.listen(port, () => {
-  console.log(
-    `Server is running on port ${port} in ${process.env.NODE_ENV} mode...`
-      .bgBlue
-  );
-});
+module.exports = {
+  createCourses,
+  fetchCourses,
+  getCourses,
+  findCourses,
+  deleteCourse,
+  removeCourse,
+  updateCoursePrice,
+ };
